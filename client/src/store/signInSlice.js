@@ -7,7 +7,7 @@ const signInSlice = createSlice({
   },
   reducers: {
     toggleSignIn(state, actions) {
-      state.signIn = !state.signIn
+      state.signIn = true;
       console.log(state)
       console.log(actions)
     },
