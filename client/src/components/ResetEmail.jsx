@@ -11,24 +11,15 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useHttp } from "../hooks/http.hook";
-import Snackbar from "@mui/material/Snackbar";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setSignIn } from "../store/signInSlice";
-import { useAuth } from "../hooks/auth.hook";
+import Snackbar from "@mui/material/Snackbar";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const { token, login, logout, userId } = useAuth();
-
-  const dispatch = useDispatch();
+export default function SignUp() {
   const navigate = useNavigate();
   function handleNavigate() {
-    navigate("/sign-up");
-  }
-  function handleSendEmail() {
-    navigate("/send-reset-message");
+    navigate("/sign-in");
   }
   const { loading, error, request } = useHttp();
   const [messageOpen, setMessageOpen] = React.useState(false);
@@ -45,21 +36,18 @@ export default function SignIn() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const sendData = await request("/api/auth/login", "POST", {
+      const sendData = await request("/api/auth/register", "POST", {
         email: data.get("email"),
         password: data.get("password"),
       });
-      login(sendData.token, sendData.userId)
       setMessage(sendData.message);
       setMessageOpen(true);
-      dispatch(setSignIn());
-      navigate("/");
     } catch (e) {
       setMessage(error);
       setMessageOpen(true);
     }
   };
-  console.log();
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -79,51 +67,50 @@ export default function SignIn() {
             Task Tracker
           </Typography>
           <Typography component="h2" variant="h5">
-            Sign in
+            Reset Password
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
             noValidate
-            sx={{ mt: 1 }}
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Confirm password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Reset
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body3" onClick={handleNavigate}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body3" onClick={handleSendEmail}>
-                  {"Forgot the password? Reset"}
+                  Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>

@@ -6,13 +6,18 @@ const signInSlice = createSlice({
     signIn: false,
   },
   reducers: {
-    toggleSignIn(state, actions) {
+    setSignIn(state, actions) {
       state.signIn = true;
+      console.log(state)
+      console.log(actions)
+    },
+    outSignIn(state, actions) {
+      state.signIn = false;
       console.log(state)
       console.log(actions)
     },
   },
 });
 
-export const { toggleSignIn} = signInSlice.actions;
+export const { setSignIn, outSignIn } = signInSlice.actions;
 export default signInSlice.reducer;
