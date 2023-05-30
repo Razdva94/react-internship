@@ -17,7 +17,7 @@ function App() {
       <Route
         path="/"
         element={
-          <ProtectedRouteElement component={<div>App</div>} loggedIn={signInState} />
+          <ProtectedRouteElement component={<div>Appdfv</div>} loggedIn={signInState} />
         }
       />
     </Routes>
