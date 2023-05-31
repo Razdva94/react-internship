@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 
 const HabitTracker = () => {
   const [habits, setHabits] = React.useState([]);
@@ -10,7 +11,7 @@ const HabitTracker = () => {
   const addHabit = () => {
     setHabits([
       ...habits,
-      { name: "", frequency: "", startDate: null, endDate: null },
+      { name: "", frequency: "", startDate: "", endDate: "" },
     ]);
   };
 
@@ -46,13 +47,11 @@ const HabitTracker = () => {
         <Select
           value={habit.frequency}
           onChange={(e) => updateHabit(index, "frequency", e.target.value)}
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard-label"
           label="Select Frequency"
         >
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
+          <MenuItem value="daily">Daily</MenuItem>
+          <MenuItem value="weekly">Weekly</MenuItem>
+          <MenuItem value="monthly">Monthly</MenuItem>
         </Select>
         <input
           type="date"
@@ -96,4 +95,4 @@ const HabitTracker = () => {
   );
 };
 
-export default HabitTracker
+export default HabitTracker;
