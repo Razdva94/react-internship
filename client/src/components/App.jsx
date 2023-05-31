@@ -12,7 +12,7 @@ import ResetEmail from "./ResetEmail";
 import { useAuth } from "../hooks/auth.hook";
 import Main from "./Main";
 import SendResetMessage from "./SendResetMessage";
-import HabitTracker from "./HabitTracker"
+import HabitTracker from "./HabitTracker";
 
 function App() {
   const navigate = useNavigate();
