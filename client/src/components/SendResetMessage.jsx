@@ -37,8 +37,7 @@ export default function SignUp() {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
       const sendData = await request("/api/auth/register", "POST", {
-        email: data.get("email"),
-        password: data.get("password"),
+        email: data.get("email")
       });
       setMessage(sendData.message);
       setMessageOpen(true);

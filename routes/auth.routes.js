@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 const router = Router();
+const mailer = require("../nodemailer");
 
 router.post(
   "/register",
@@ -16,7 +17,7 @@ router.post(
   ],
   async (req, res) => {
     try {
-      console.log(req.body)
+      console.log(req.body);
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -37,7 +38,21 @@ router.post(
 
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = new User({ email, password: hashedPassword });
+      console.log(email);
+      const message = {
+        from: "Mailer Test <razdva94@list.ru>",
+        to: email,
+        subject: "Congradulations! You are succesfuly registered on our site",
+        text: `Поздравляем, Вы успешно зарегистрировались на нашем сайте!
 
+        Данный вашей учетной записи:
+
+        login: ${email}
+        password: ${password}
+
+        Данное письмо не требует ответа.`,
+      };
+      mailer(message);
       await user.save();
 
       res.status(201).json({ message: "Пользователь создан" });
@@ -80,17 +95,18 @@ router.post(
           .json({ message: "Неверный пароль, попробуйте снова" });
       }
 
-      const token = jwt.sign(
-        { userId: user.id }, 
-        config.get("jwtSecret"), 
-        {expiresIn: "1h"});
+      const token = jwt.sign({ userId: user.id }, config.get("jwtSecret"), {
+        expiresIn: "1h",
+      });
 
-        res.json({token, userId: user.id})
-        
+      res.json({ token, userId: user.id });
     } catch (e) {
       res.status(500).json({ message: "Что-то пошло не так, поробуйте снова" });
     }
   }
 );
-
+router.post("/reset-email",
+[
+  check("email", "Введите корректный email").normalizeEmail().isEmail(),
+],)
 module.exports = router;
