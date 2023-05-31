@@ -36,7 +36,7 @@ export default function SignUp() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const sendData = await request("/api/auth/register", "POST", {
+      const sendData = await request("/api/auth/reset-email", "POST", {
         email: data.get("email")
       });
       setMessage(sendData.message);
