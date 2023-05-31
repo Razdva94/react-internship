@@ -13,45 +13,45 @@ import { useAuth } from "../hooks/auth.hook";
 import Main from "./Main";
 import SendResetMessage from "./SendResetMessage";
 import HabitTracker from "./HabitTracker"
+import ProfileAndAvatar from "./ProfileAndAvatar";
+import PageLayout from "./PageLayout";
+
 
 function App() {
   const navigate = useNavigate();
   const { token, login, logout, userId } = useAuth();
   const signInState = useSelector((state) => state.slide.signIn);
-  console.log(signInState);
+  // console.log(signInState);
   const [authenticated, setAuthenticated] = React.useState(false);
   React.useEffect(() => {
     setAuthenticated(token);
   }, [token]);
-  console.log(authenticated);
-
-  React.useEffect(() => {
-    if (authenticated) {
-      navigate("/");
-    }
-  }, [authenticated, navigate, token]);
+  // console.log(authenticated)
+  console.log(signInState, authenticated)
   return (
     <Routes>
-      <Route path="/send-reset-message" element={<SendResetMessage />} />
-      <Route path="/reset" element={<ResetEmail />} />
+      <Route element={<PageLayout setAuthenticated={setAuthenticated} />}>
+        <Route path="/send-reset-message" element={<SendResetMessage />} />
+        <Route path="/reset" element={<ResetEmail />} />
+        <Route path="/profile" element={<ProfileAndAvatar />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRouteElement
+              component={
+                <Main setAuthenticated={setAuthenticated} />
+              }
+              loggedIn={signInState || authenticated}
+            />
+          }
+        />
+      </Route>
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/sign-in" element={<SignIn />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRouteElement
-            component={
-              <>
-                <Main setAuthenticated={setAuthenticated} />
-                <HabitTracker />
-              </>
-            }
-            loggedIn={signInState || authenticated}
-          />
-        }
-      />
+
     </Routes>
   );
+
 }
 
 export default App;
