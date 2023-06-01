@@ -23,7 +23,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({
           errors: errors.array(),
-          message: "Некорректные данные при регистарции",
+          message: "Некорректные данные при регистрации",
         });
       }
       const { email, password } = req.body;
@@ -106,7 +106,7 @@ router.post(
   }
 );
 router.post("/reset-email",
-[
-  check("email", "Введите корректный email").normalizeEmail().isEmail(),
-],)
+  [
+    check("email", "Введите корректный email").normalizeEmail().isEmail(),
+  ],)
 module.exports = router;

@@ -10,6 +10,7 @@ import Main from "./Main";
 import SendResetMessage from "./SendResetMessage";
 import ProfileAndAvatar from "./ProfileAndAvatar";
 import Bar from "./Bar";
+import PageLayout from "./PageLayout";
 
 function App() {
   const navigate = useNavigate();
@@ -32,30 +33,34 @@ function App() {
   }, [authenticated, navigate, authProfileState]);
   return (
     <Routes>
+      <Route element={<PageLayout setAuthenticated={setAuthenticated} />}>
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRouteElement
+              component={<Main setAuthenticated={setAuthenticated} />}
+              loggedIn={signInState || authenticated}
+            />
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRouteElement
+
+              component={<ProfileAndAvatar />
+              }
+              loggedIn={signInState || authenticated}
+            />
+          }
+        />
+      </Route>
       <Route path="/send-reset-message" element={<SendResetMessage />} />
       <Route path="/reset" element={<ResetEmail />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/sign-in" element={<SignIn />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRouteElement
-            component={<Main setAuthenticated={setAuthenticated} />}
-            loggedIn={signInState || authenticated}
-          />
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRouteElement
 
-            component={<><Bar /><ProfileAndAvatar /></>
-            }
-            loggedIn={signInState || authenticated}
-          />
-        }
-      />
     </Routes>
   );
 }
