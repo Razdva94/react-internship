@@ -12,9 +12,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/auth.hook";
 import { useDispatch, useSelector } from "react-redux";
 import { outSignIn } from "../store/signInSlice";
+import { setAuthProfile } from "../store/signInSlice";
 
 
 function Bar({ setAuthenticated }) {
+    const authProfileState = useSelector((state) => state.slide.authProfile);
     const dispatch = useDispatch();
     const signInState = useSelector((state) => state.slide.signIn);
     const { token, login, logout, userId } = useAuth();
@@ -35,6 +37,9 @@ function Bar({ setAuthenticated }) {
 
     const goToProfile = () => {
         navigate('/profile')
+        dispatch(setAuthProfile())
+        console.log(authProfileState)
+        localStorage.setItem("authProfileState", authProfileState)
     }
 
     const handleLogout = () => {
