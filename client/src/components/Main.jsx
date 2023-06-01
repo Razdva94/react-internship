@@ -1,12 +1,17 @@
 import React from "react";
 import HabitTracker from "./HabitTracker";
+import PageLayout from "./PageLayout";
 
 function Main({ setAuthenticated }) {
 
   return (
-    <div>
+
+    <>
+      <PageLayout setAuthenticated={setAuthenticated} />
       <HabitTracker />
-    </div>
+    </>
+
+
   );
 }
 
