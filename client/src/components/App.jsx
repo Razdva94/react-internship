@@ -9,6 +9,7 @@ import { useAuth } from "../hooks/auth.hook";
 import Main from "./Main";
 import SendResetMessage from "./SendResetMessage";
 import ProfileAndAvatar from "./ProfileAndAvatar";
+import Bar from "./Bar";
 
 function App() {
   const navigate = useNavigate();
@@ -48,7 +49,9 @@ function App() {
         path="/profile"
         element={
           <ProtectedRouteElement
-            component={<ProfileAndAvatar />}
+
+            component={<><Bar /><ProfileAndAvatar /></>
+            }
             loggedIn={signInState || authenticated}
           />
         }
