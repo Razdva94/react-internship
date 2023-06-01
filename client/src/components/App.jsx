@@ -26,29 +26,37 @@ function App() {
     setAuthenticated(token);
   }, [token]);
   // console.log(authenticated)
-  console.log(signInState, authenticated);
+  console.log(signInState, authenticated)
+  React.useEffect(() => {
+    if (authenticated) {
+      navigate("/");
+    }
+  }, [authenticated, navigate, token]);
   return (
     <Routes>
+
       <Route path="/send-reset-message" element={<SendResetMessage />} />
       <Route path="/reset" element={<ResetEmail />} />
-      <Route path="/profile" element={<ProfileAndAvatar />} />
+
       <Route
         path="/"
         element={
           <ProtectedRouteElement
             component={
-              <>
-                <PageLayout setAuthenticated={setAuthenticated} />
-                <HabitTracker />
-              </>
+
+              {/* <Main setAuthenticated={setAuthenticated} /> */ }
+              < Routes >
+                  <Route path="/profile" element={<ProfileAndAvatar />} />
+                  <Route path="/" element={<Main />} /> 
+                </Routes>
             }
-            loggedIn={signInState || authenticated}
-          />
+loggedIn = { signInState || authenticated}
         }
-      />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/sign-in" element={<SignIn />} />
-    </Routes>
+/> 
+  < Route path = "/sign-up" element = {< SignUp />} />
+    < Route path = "/sign-in" element = {< SignIn />} />
+
+    </Routes >
   );
 }
 
