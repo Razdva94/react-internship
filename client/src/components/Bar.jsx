@@ -49,6 +49,12 @@ function Bar({ setAuthenticated }) {
         setAuthenticated(false);
         navigate('/sign-in')
     };
+
+    const goToHabits = () => {
+        localStorage.setItem("authProfileState", '')
+        navigate('/')
+    }
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -61,8 +67,12 @@ function Bar({ setAuthenticated }) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    Photos
+                <Typography
+                    onClick={goToHabits}
+                    variant="h6"
+                    component="div"
+                    sx={{ flexGrow: 1 }}>
+                    Habits
                 </Typography>
                 {auth && (
                     <div>

@@ -25,7 +25,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).json({
           errors: errors.array(),
-          message: "Некорректные данные при регистарции",
+          message: "Некорректные данные при регистрации",
         });
       }
       const { email, password } = req.body;
@@ -156,7 +156,7 @@ router.post("/reset-password", async (req, res) => {
   try {
     const { userID, code, password } = req.body;
 
-   
+
     const temporaryRecord = await TemporaryRecord.findOne({
       userID: userID,
       verificationCode: code,
@@ -178,7 +178,7 @@ router.post("/reset-password", async (req, res) => {
 
     await user.save();
 
-   
+
     await temporaryRecord.remove();
 
     res.status(200).json({ message: "Пароль успешно изменен" });

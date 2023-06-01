@@ -41,7 +41,8 @@ import React from "react";
 import MenuIcon from './menu.svg';
 import { useAuth } from "../hooks/auth.hook";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
-
+import TextField from "@mui/material/TextField";
+import Avatar from '@mui/material/Avatar';
 const ProfileAndAvatar = () => {
     const navigate = useNavigate()
     const [name, setName] = React.useState('');
@@ -61,22 +62,26 @@ const ProfileAndAvatar = () => {
     };
 
     return (
-        <div>
-            <input
+        <div style={{ marginTop: '24px', marginLeft: '24px' }}>
+            <TextField
+                id="outlined-basic"
+                label="Enter your nickname"
+                variant="outlined"
                 type="text"
-                placeholder="Enter your name"
                 value={name}
                 onChange={handleNameChange}
             />
-            <input
+            <TextField
+                id="standard-basic"
+                label="Enter URL"
+                variant="standard"
                 type="text"
-                placeholder="Enter avatar URL"
                 value={avatar}
                 onChange={handleAvatarChange}
             />
             <div>
                 <h2>Name: {name}</h2>
-                <img src={avatar} alt="Avatar" />
+                {avatar ? <img src={avatar} alt="Avatar" /> : <Avatar>N</Avatar>}
             </div>
             <button onClick={handleLogout}>Logout</button>
         </div>

@@ -11,7 +11,7 @@ const HabitTracker = () => {
   const addHabit = () => {
     setHabits([
       ...habits,
-      { name: "", frequency: "", startDate: "", endDate: "" },
+      { name: "", frequency: "daily", startDate: "", endDate: "" },
     ]);
   };
 
