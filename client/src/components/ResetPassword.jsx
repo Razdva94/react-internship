@@ -35,13 +35,22 @@ export default function ResetPassword() {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
+      const url = window.location.search;
+      const searchParams = new URLSearchParams(url);
+      const userID = searchParams.get("userID");
+      const code = searchParams.get("code");
       const data = new FormData(event.currentTarget);
-      const sendData = await request("/api/auth/register", "POST", {
-        email: data.get("email"),
-        password: data.get("password"),
-      });
-      setMessage(sendData.message);
-      setMessageOpen(true);
+      if (data.get("password") === data.get("confirmation-password")) {
+        const sendData = await request("/api/auth/reset-password", "POST", {
+          password: data.get("password"),
+          userID,
+          code,
+        });
+
+        setMessage(sendData.message);
+        setMessageOpen(true);
+        navigate("/sign-in")
+      }
     } catch (e) {
       setMessage(error);
       setMessageOpen(true);
@@ -91,10 +100,10 @@ export default function ResetPassword() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Confirm password"
+                  name="confirmation-password"
+                  label="Confirm-password"
                   type="password"
-                  id="password"
+                  id="confirmation-password"
                   autoComplete="new-password"
                 />
               </Grid>
