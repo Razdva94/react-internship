@@ -36,12 +36,14 @@ export default function ResetPassword() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const sendData = await request("/api/auth/register", "POST", {
-        email: data.get("email"),
+      if(data.get("password") === data.get("confirmation-password")){
+      const sendData = await request("/api/auth/reset-password", "POST", {
         password: data.get("password"),
       });
+    
       setMessage(sendData.message);
       setMessageOpen(true);
+      }
     } catch (e) {
       setMessage(error);
       setMessageOpen(true);
@@ -91,10 +93,10 @@ export default function ResetPassword() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
-                  label="Confirm password"
+                  name="confirmation-password"
+                  label="Confirm-password"
                   type="password"
-                  id="password"
+                  id="confirmation-password"
                   autoComplete="new-password"
                 />
               </Grid>
