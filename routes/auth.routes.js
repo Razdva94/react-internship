@@ -164,7 +164,6 @@ router.post(
   async (req, res) => {
     try {
       const { userID, code, password } = req.body;
-
       const temporaryRecord = await TemporaryRecord.findOne({
         userID: userID,
         verificationCode: code,
@@ -185,7 +184,6 @@ router.post(
 
       await user.save();
 
-      await temporaryRecord.remove();
 
       res.status(200).json({ message: "Пароль успешно изменен" });
     } catch (e) {

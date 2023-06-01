@@ -35,14 +35,21 @@ export default function ResetPassword() {
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
+      const url = window.location.search;
+      const searchParams = new URLSearchParams(url);
+      const userID = searchParams.get("userID");
+      const code = searchParams.get("code");
       const data = new FormData(event.currentTarget);
-      if(data.get("password") === data.get("confirmation-password")){
-      const sendData = await request("/api/auth/reset-password", "POST", {
-        password: data.get("password"),
-      });
-    
-      setMessage(sendData.message);
-      setMessageOpen(true);
+      if (data.get("password") === data.get("confirmation-password")) {
+        const sendData = await request("/api/auth/reset-password", "POST", {
+          password: data.get("password"),
+          userID,
+          code,
+        });
+
+        setMessage(sendData.message);
+        setMessageOpen(true);
+        navigate("/sign-in")
       }
     } catch (e) {
       setMessage(error);
