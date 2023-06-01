@@ -3,7 +3,13 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import ProtectedRouteElement from "./ProtectedRouteElement";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Button from "@mui/material/Button";
+import Select from "@mui/material/Select";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import ResetPassword from "./ResetPassword";
+
 import ResetEmail from "./ResetEmail";
 import { useAuth } from "../hooks/auth.hook";
 import Main from "./Main";
@@ -15,6 +21,7 @@ function App() {
   const { token } = useAuth();
   const signInState = useSelector((state) => state.slide.signIn);
   const authProfileState = useSelector((state) => state.slide.authProfile);
+
   const [authenticated, setAuthenticated] = React.useState(false);
   React.useEffect(() => {
     setAuthenticated(token);
@@ -32,7 +39,7 @@ function App() {
   return (
     <Routes>
       <Route path="/send-reset-message" element={<SendResetMessage />} />
-      <Route path="/reset" element={<ResetEmail />} />
+      <Route path="/reset" element={<ResetPassword />} />
       <Route path="/sign-up" element={<SignUp />} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route
