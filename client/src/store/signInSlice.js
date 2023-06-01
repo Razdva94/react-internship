@@ -4,8 +4,12 @@ const signInSlice = createSlice({
   name: "signIn",
   initialState: {
     signIn: false,
+    authProfile: false,
   },
   reducers: {
+    setAuthProfile(state){
+    state.authProfile = true
+    },
     setSignIn(state, actions) {
       state.signIn = true;
       console.log(state)
@@ -19,5 +23,5 @@ const signInSlice = createSlice({
   },
 });
 
-export const { setSignIn, outSignIn } = signInSlice.actions;
+export const { setSignIn, outSignIn, setAuthProfile } = signInSlice.actions;
 export default signInSlice.reducer;
