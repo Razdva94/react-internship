@@ -4,8 +4,10 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
+const TemporaryRecord = require("../models/TemporaryRecord");
 const router = Router();
 const mailer = require("../nodemailer");
+const crypto = require("crypto");
 
 router.post(
   "/register",
@@ -105,8 +107,85 @@ router.post(
     }
   }
 );
-router.post("/reset-email",
-  [
-    check("email", "Введите корректный email").normalizeEmail().isEmail(),
-  ],)
+
+router.post(
+  "/reset-email",
+  [check("email", "Введите корректный email").normalizeEmail().isEmail()],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          errors: errors.array(),
+          message: "Некорректные данные ввода",
+        });
+      }
+
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        return res.status(400).json({ message: "Пользователь не найден" });
+      }
+
+      const verificationCode = crypto.randomBytes(3).toString("hex");
+
+      const temporaryRecord = new TemporaryRecord({
+        userID: user.id,
+        verificationCode: verificationCode,
+      });
+      await temporaryRecord.save();
+
+      const message = {
+        from: "Mailer Test <razdva94@list.ru>",
+        to: email,
+        subject: "Password change",
+        text: `Вы отправили запрос на смену пароля.
+        Пройдите по ссылке: http://localhost:3000/reset?userID=${user.id}&code=${verificationCode}`,
+      };
+      mailer(message);
+      res.status(201).json({ message: "Сообщение отправлено" });
+    } catch (e) {
+      res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" });
+    }
+  }
+);
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { userID, code, password } = req.body;
+
+
+    const temporaryRecord = await TemporaryRecord.findOne({
+      userID: userID,
+      verificationCode: code,
+    });
+
+    if (!temporaryRecord) {
+      return res.status(400).json({ message: "Некорректные данные" });
+    }
+
+    const user = await User.findById(userID);
+
+    if (!user) {
+      return res.status(400).json({ message: "Пользователь не найден" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    user.password = hashedPassword;
+
+    await user.save();
+
+
+    await temporaryRecord.remove();
+
+    res.status(200).json({ message: "Пароль успешно изменен" });
+  } catch (e) {
+    res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" });
+  }
+});
+
+
 module.exports = router;

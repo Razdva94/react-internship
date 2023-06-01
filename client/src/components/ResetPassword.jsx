@@ -16,7 +16,7 @@ import Snackbar from "@mui/material/Snackbar";
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+export default function ResetPassword() {
   const navigate = useNavigate();
   function handleNavigate() {
     navigate("/sign-in");
