@@ -172,15 +172,7 @@ router.post(
         return res.status(400).json({ message: "Некорректные данные" });
       }
 
-<<<<<<< HEAD
       const user = await User.findById(userID);
-=======
-
-    const temporaryRecord = await TemporaryRecord.findOne({
-      userID: userID,
-      verificationCode: code,
-    });
->>>>>>> 21ff3ebf8a187669058a45c017c9f9c1ad8defd0
 
       if (!user) {
         return res.status(400).json({ message: "Пользователь не найден" });
@@ -199,28 +191,6 @@ router.post(
         .status(500)
         .json({ message: "Что-то пошло не так, попробуйте снова" });
     }
-<<<<<<< HEAD
-=======
-
-    const user = await User.findById(userID);
-
-    if (!user) {
-      return res.status(400).json({ message: "Пользователь не найден" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    user.password = hashedPassword;
-
-    await user.save();
-
-
-    await temporaryRecord.remove();
-
-    res.status(200).json({ message: "Пароль успешно изменен" });
-  } catch (e) {
-    res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" });
->>>>>>> 21ff3ebf8a187669058a45c017c9f9c1ad8defd0
   }
 );
 
