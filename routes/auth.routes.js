@@ -147,45 +147,51 @@ router.post(
       mailer(message);
       res.status(201).json({ message: "Сообщение отправлено" });
     } catch (e) {
-      res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" });
+      res
+        .status(500)
+        .json({ message: "Что-то пошло не так, попробуйте снова" });
     }
   }
 );
 
-router.post("/reset-password", async (req, res) => {
-  try {
-    const { userID, code, password } = req.body;
+router.post(
+  "/reset-password",
+  [
+    check("password", "Минимальная длина пароля 6 символов").isLength({
+      min: 6,
+    }),
+  ],
+  async (req, res) => {
+    try {
+      const { userID, code, password } = req.body;
+      const temporaryRecord = await TemporaryRecord.findOne({
+        userID: userID,
+        verificationCode: code,
+      });
+      if (!temporaryRecord) {
+        return res.status(400).json({ message: "Некорректные данные" });
+      }
+
+      const user = await User.findById(userID);
+
+      if (!user) {
+        return res.status(400).json({ message: "Пользователь не найден" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+
+      user.password = hashedPassword;
+
+      await user.save();
 
 
-    const temporaryRecord = await TemporaryRecord.findOne({
-      userID: userID,
-      verificationCode: code,
-    });
-
-    if (!temporaryRecord) {
-      return res.status(400).json({ message: "Некорректные данные" });
+      res.status(200).json({ message: "Пароль успешно изменен" });
+    } catch (e) {
+      res
+        .status(500)
+        .json({ message: "Что-то пошло не так, попробуйте снова" });
     }
-
-    const user = await User.findById(userID);
-
-    if (!user) {
-      return res.status(400).json({ message: "Пользователь не найден" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    user.password = hashedPassword;
-
-    await user.save();
-
-
-    await temporaryRecord.remove();
-
-    res.status(200).json({ message: "Пароль успешно изменен" });
-  } catch (e) {
-    res.status(500).json({ message: "Что-то пошло не так, попробуйте снова" });
   }
-});
-
+);
 
 module.exports = router;
