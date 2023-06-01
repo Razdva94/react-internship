@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import ResetPassword from "./ResetPassword";
 
-import ResetEmail from "./ResetEmail";
 import { useAuth } from "../hooks/auth.hook";
 import Main from "./Main";
 import SendResetMessage from "./SendResetMessage";
