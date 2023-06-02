@@ -4,21 +4,13 @@ import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import ProtectedRouteElement from "./ProtectedRouteElement";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import ResetPassword from "./ResetPassword";
-<<<<<<< HEAD
-
-=======
->>>>>>> 9046fdc3652cb141988d55a7759b3d25f379461e
 import { useAuth } from "../hooks/auth.hook";
 import Main from "./Main";
 import SendResetMessage from "./SendResetMessage";
 import ProfileAndAvatar from "./ProfileAndAvatar";
-import Bar from "./Bar";
 import PageLayout from "./PageLayout";
+
 
 function App() {
   const navigate = useNavigate();
